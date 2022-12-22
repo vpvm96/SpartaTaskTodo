@@ -1,8 +1,18 @@
 import React from "react"
 import styled from "styled-components"
 
-const TodoListContent = ({ todoData }) => {
-  const { title, content, createAt } = todoData
+const TodoListContent = ({
+  todoData,
+  onTodoUpdateEvent,
+  onTodoDeleteEvent,
+}) => {
+  const { id, title, content, createdAt, isDone } = todoData
+
+  const handleTodoUpdate = (status) => () => {
+    const isDone = status === true ? true : false
+
+    onTodoUpdateEvent({ id, isDone })
+  }
 
   return (
     <TodoContainer>
@@ -13,8 +23,19 @@ const TodoListContent = ({ todoData }) => {
         <TodoContentText>{content}</TodoContentText>
       </TodoContentBox>
       <TodoCreateAtBox>
-        <TodoCreateAtText>{createAt}</TodoCreateAtText>
+        <TodoCreateAtText>{createdAt}</TodoCreateAtText>
       </TodoCreateAtBox>
+      <TodoBtnBox>
+        {isDone === false ? (
+          <TodoCompletedBtn onClick={handleTodoUpdate(true)}>
+            완료
+          </TodoCompletedBtn>
+        ) : (
+          <TodoCancelBtn onClick={handleTodoUpdate(false)}>취소</TodoCancelBtn>
+        )}
+
+        <TodoDeletedBtn onClick={onTodoDeleteEvent(id)}>삭제</TodoDeletedBtn>
+      </TodoBtnBox>
     </TodoContainer>
   )
 }
@@ -45,6 +66,23 @@ const TodoCreateAtBox = styled.div`
 
 const TodoCreateAtText = styled.p`
   font-size: large;
+`
+
+const TodoBtnBox = styled.div`
+  width: 100%;
+`
+
+const TodoCompletedBtn = styled.button`
+  width: 20%;
+  margin-right: 0.5rem;
+`
+
+const TodoCancelBtn = styled.button`
+  width: 20%;
+`
+
+const TodoDeletedBtn = styled.button`
+  width: 20%;
 `
 
 export default TodoListContent

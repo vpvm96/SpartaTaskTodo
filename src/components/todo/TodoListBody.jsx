@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 import LabeledInput from "../common/LabeldInput"
 import TodoListContent from "./TodoListContent"
@@ -7,11 +6,14 @@ const TodoListBody = ({
   todoData,
   errorMsg,
   reset,
+  onTodoCreateEvent,
+  onTodoUpdateEvent,
+  onTodoDeleteEvent,
   onTodoFormChangeEvent,
   onTodoFormSubmitEvent,
 }) => {
-  const handleTodoFormSubmit = (data, e) => {
-    console.log(data)
+  const handleTodoFormSubmit = (todoData, e) => {
+    onTodoCreateEvent(todoData)
     reset({ title: "", content: "" })
     e.target[0].focus()
   }
@@ -38,7 +40,12 @@ const TodoListBody = ({
         </TodoForm>
         <TodoContentBox>
           {todoData.map((todo) => (
-            <TodoListContent key={todo.id} todoData={todo} />
+            <TodoListContent
+              key={todo.id}
+              todoData={todo}
+              onTodoUpdateEvent={onTodoUpdateEvent}
+              onTodoDeleteEvent={onTodoDeleteEvent}
+            />
           ))}
         </TodoContentBox>
       </TodoContainer>
