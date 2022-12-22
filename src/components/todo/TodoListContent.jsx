@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 const TodoListContent = ({
@@ -17,14 +18,20 @@ const TodoListContent = ({
   return (
     <TodoContainer>
       <TodoTitleBox>
-        <TodoTitleText>{title}</TodoTitleText>
+        {isDone === false ? (
+          <TodoTitleText>{title}</TodoTitleText>
+        ) : (
+          <TodoTitleCompletedText>{title}</TodoTitleCompletedText>
+        )}
+        <TodoCreateAtText>{createdAt}</TodoCreateAtText>
       </TodoTitleBox>
       <TodoContentBox>
-        <TodoContentText>{content}</TodoContentText>
+        {isDone === false ? (
+          <TodoContentText>{content}</TodoContentText>
+        ) : (
+          <TodoContentCompletedText>{content}</TodoContentCompletedText>
+        )}
       </TodoContentBox>
-      <TodoCreateAtBox>
-        <TodoCreateAtText>{createdAt}</TodoCreateAtText>
-      </TodoCreateAtBox>
       <TodoBtnBox>
         {isDone === false ? (
           <TodoCompletedBtn onClick={handleTodoUpdate(true)}>
@@ -33,8 +40,15 @@ const TodoListContent = ({
         ) : (
           <TodoCancelBtn onClick={handleTodoUpdate(false)}>취소</TodoCancelBtn>
         )}
-
         <TodoDeletedBtn onClick={onTodoDeleteEvent(id)}>삭제</TodoDeletedBtn>
+        <TodoDetailLinkBox>
+          <Link
+            to={`todo/${id.slice(0, 8)}`}
+            state={{ title, content, createdAt }}
+          >
+            상세 페이지
+          </Link>
+        </TodoDetailLinkBox>
       </TodoBtnBox>
     </TodoContainer>
   )
@@ -45,11 +59,14 @@ const TodoContainer = styled.div`
 `
 
 const TodoTitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
 `
 
 const TodoTitleText = styled.h2`
-  font-weight: bold;
+  font-size: 1.5rem;
 `
 
 const TodoContentBox = styled.div`
@@ -60,16 +77,27 @@ const TodoContentText = styled.p`
   font-weight: normal;
 `
 
-const TodoCreateAtBox = styled.div`
-  width: 100%;
-`
-
 const TodoCreateAtText = styled.p`
   font-size: large;
 `
 
+const TodoTitleCompletedText = styled.p`
+  font-size: 1.5rem;
+  color: grey;
+  text-decoration: line-through;
+`
+
+const TodoContentCompletedText = styled.p`
+  font-weight: normal;
+  color: grey;
+  text-decoration: line-through;
+`
+
 const TodoBtnBox = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 
 const TodoCompletedBtn = styled.button`
@@ -79,10 +107,16 @@ const TodoCompletedBtn = styled.button`
 
 const TodoCancelBtn = styled.button`
   width: 20%;
+  margin-right: 0.5rem;
 `
 
 const TodoDeletedBtn = styled.button`
   width: 20%;
+`
+
+const TodoDetailLinkBox = styled.div`
+  margin-left: 7rem;
+  width: 30%;
 `
 
 export default TodoListContent

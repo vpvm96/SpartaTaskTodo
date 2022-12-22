@@ -11,11 +11,11 @@ const LabeledInput = ({ type, id, labelText, errorMsg, onChangeEvent }) => {
 }
 
 const TodoInputBox = styled.div`
-  width: 100%;
+  width: 98%;
 `
 
 const TodoInputLabel = styled.label`
-  margin-left: 2rem;
+  width: 100%;
 `
 const TodoInput = styled.input`
   width: 100%;
